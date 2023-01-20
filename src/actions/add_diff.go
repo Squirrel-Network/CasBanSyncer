@@ -1,15 +1,10 @@
 package actions
 
 import (
-	"CASBanSyncer/src/actions/types"
-	"CASBanSyncer/src/consts"
 	dbTypes "CASBanSyncer/src/database/types"
 	"CASBanSyncer/src/http"
 	"CASBanSyncer/src/utils/concurrency"
-	"encoding/json"
-	"fmt"
 	"gorm.io/gorm"
-	"math/rand"
 	"strings"
 	"sync"
 )
@@ -45,24 +40,9 @@ func AddDiff(db *gorm.DB) (int, error) {
 			}
 			defer wg.Done()
 			userId := params[0]
-			res2 := http.ExecuteRequest(
-				fmt.Sprintf("https://api.cas.chat/check?user_id=%s", userId),
-				http.Retries(3),
-				http.Headers(map[string]string{
-					// Spoofing the user agent to bypass Cloudflare bot detection
-					"User-Agent": fmt.Sprintf(
-						"Mozilla/5.0 (%s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36",
-						consts.Devices[rand.Intn(len(consts.Devices))],
-					),
-				}),
-			)
-			if res2.Error != nil {
-				err = res2.Error
-				return
-			}
-			var ban types.CasResult
-			err = json.Unmarshal(res2.Read(), &ban)
-			if err != nil {
+			ban, err2 := CheckApi(userId)
+			if err2 != nil {
+				err = err2
 				return
 			}
 			if ban.Banned {

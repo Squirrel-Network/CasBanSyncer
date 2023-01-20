@@ -31,6 +31,7 @@ func main() {
 	}
 	fmt.Println("CASBanSyncer started!")
 	for {
+		log.Println("Syncing...")
 		result, err := actions.RemoveDiff(db)
 		if err != nil {
 			log.Println(err)

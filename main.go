@@ -44,12 +44,14 @@ func main() {
 			log.Println(err)
 			continue
 		}
-		result, err = actions.AddNew(db)
-		log.Println("Added", result, "cas bans from the feed")
-		if err != nil {
-			log.Println(err)
-			continue
+		for i := 0; i < 60; i++ {
+			result, err = actions.AddNew(db)
+			log.Println("Added", result, "cas bans from the feed")
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+			time.Sleep(time.Minute * 1)
 		}
-		time.Sleep(time.Hour * 1)
 	}
 }

@@ -11,8 +11,7 @@ import (
 
 func AddDiff(db *gorm.DB) (int, error) {
 	var result []*dbTypes.Superban
-	table := db.Table("superban_table")
-	table.Find(&result)
+	db.Table("superban_table").Find(&result)
 	rMap := make(map[string]bool)
 	for _, superban := range result {
 		rMap[superban.UserId] = true

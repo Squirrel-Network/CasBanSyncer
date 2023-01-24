@@ -33,13 +33,13 @@ func main() {
 	for {
 		log.Println("Syncing...")
 		result, err := actions.RemoveDiff(db)
-		log.Println("Removed", result, "cas bans")
+		log.Println("Removed", result, "expired cas bans")
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 		result, err = actions.AddDiff(db)
-		log.Println("Added", result, "cas bans")
+		log.Println("Added", result, "cas bans from export.csv")
 		if err != nil {
 			log.Println(err)
 			continue

@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"CASBanSyncer/src/database"
 	dbTypes "CASBanSyncer/src/database/types"
 	"CASBanSyncer/src/http"
 	"CASBanSyncer/src/utils/concurrency"
@@ -45,13 +46,7 @@ func AddDiff(db *gorm.DB) (int, error) {
 				return
 			}
 			if ban.Banned {
-				db.Table("superban_table").Create(&dbTypes.Superban{
-					UserId:         userId,
-					MotivationText: "CAS Ban Import",
-					UserDate:       ban.Result.TimeAdded,
-					UserFirstName:  "Unknown",
-					IdOperator:     "1065189838",
-				})
+				database.AddSuperBan(db, userId, ban.Result.TimeAdded)
 				count++
 			}
 		}, user)

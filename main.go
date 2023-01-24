@@ -33,17 +33,23 @@ func main() {
 	for {
 		log.Println("Syncing...")
 		result, err := actions.RemoveDiff(db)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
 		log.Println("Removed", result, "cas bans")
-		result, err = actions.AddDiff(db)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
+		result, err = actions.AddDiff(db)
 		log.Println("Added", result, "cas bans")
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		result, err = actions.AddNew(db)
+		log.Println("Added", result, "cas bans from the feed")
+		if err != nil {
+			log.Println(err)
+			continue
+		}
 		time.Sleep(time.Hour * 1)
 	}
 }

@@ -44,14 +44,16 @@ func main() {
 			log.Println(err)
 			continue
 		}
+		var totalAdd int
 		for i := 0; i < 60; i++ {
 			result, err = actions.AddNew(db)
-			log.Println("Added", result, "cas bans from the feed")
+			totalAdd += result
 			if err != nil {
 				log.Println(err)
 				continue
 			}
 			time.Sleep(time.Minute * 1)
 		}
+		log.Println("Added", result, "cas bans from the feed")
 	}
 }

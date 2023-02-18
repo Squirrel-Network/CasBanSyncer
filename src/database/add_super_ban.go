@@ -7,6 +7,9 @@ import (
 )
 
 func AddSuperBan(db *gorm.DB, userId string, date time.Time) {
+	if userId == "1087968824" {
+		return
+	}
 	db.Table("superban_table").Create(&dbTypes.Superban{
 		UserId:         userId,
 		MotivationText: "CAS Ban Import",
